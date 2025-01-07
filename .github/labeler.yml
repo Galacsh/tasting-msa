@@ -1,0 +1,11 @@
+# Add 'Feature' label to any PR where the head branch name starts with `feat` in the name
+Feature:
+ - head-branch: ['^feat']
+
+# Add 'Fix' label to any PR where the head branch name starts with `fix` in the name
+Fix:
+ - head-branch: ['^fix']
+
+# Add 'Documentation' label to any PR where the head branch name starts with `docs` in the name
+Documentation:
+ - head-branch: ['^docs']
