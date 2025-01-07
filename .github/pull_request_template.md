@@ -2,7 +2,11 @@
 
 ### Related Issues
 
-> `- #issue_number`
+> `- Closes #issue_number`
+> `- Fixes #issue_number`
+> `- Resolves #issue_number`
+> 
+> If there are no related issues, just write "None".
 
 ### Description
 
