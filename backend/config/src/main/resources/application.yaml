@@ -1,0 +1,20 @@
+server:
+  port: 8888
+
+spring:
+  cloud:
+    config:
+      server:
+        vault:
+          host: localhost
+          authentication: token
+          token: ${VAULT_TOKEN}
+          kv-version: 2
+          backend: app
+
+  profiles:
+    active: vault
+
+logging:
+  level:
+    org.springframework.web.client: debug
