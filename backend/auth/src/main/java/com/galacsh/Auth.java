@@ -2,12 +2,10 @@ package com.galacsh;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.config.server.EnableConfigServer;
 
 @SpringBootApplication
-@EnableConfigServer
-public class VvriteConfigServer {
+public class Auth {
     public static void main(String[] args) {
-        SpringApplication.run(VvriteConfigServer.class, args);
+        SpringApplication.run(Auth.class, args);
     }
 }
