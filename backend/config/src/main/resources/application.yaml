@@ -1,20 +1,30 @@
-server:
-  port: 8888
+server.port: 0
 
 spring:
-  cloud:
-    config:
-      server:
-        vault:
-          host: localhost
-          authentication: token
-          token: ${VAULT_TOKEN}
-          kv-version: 2
-          backend: app
+  application.name: config
+  # Must be set to "development" or "production".
+  profiles.active: development
 
-  profiles:
-    active: vault
+---
 
-logging:
-  level:
-    org.springframework.web.client: debug
+# Other configs
+spring:
+  main.banner-mode: off
+  output.ansi.enabled: detect
+  lifecycle.timeout-per-shutdown-phase: 10s
+
+logging.level:
+  root: info
+  # org.springframework.web.client: debug
+
+---
+
+# Import and group profiles
+spring:
+  config.import:
+    - classpath:config/actuator.yaml
+    - classpath:config/eureka.yaml
+    - classpath:config/cloud-config.yaml
+  profiles.group:
+    production: vault
+    development: vault
