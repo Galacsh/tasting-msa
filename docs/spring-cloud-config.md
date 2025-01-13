@@ -4,6 +4,43 @@
 
 ![Spring Cloud Config Flow.png](assets/spring-cloud-config-flow.png)
 
+## Why Spring Cloud Config Server?
+
+I've considered between:
+
+- Config Client connects to:
+  1. Private Git repository + Config Server(Git)
+  2. Vault server directly
+  3. Vault server + Config Server(Vault)
+
+and **chose the third option**.
+
+At first, I thought that the first option would be the best choice because it's familiar to me.
+However, when it comes to thinking about the security, it gets complicated.
+It's hard to **fine-grain the access control** with the Git repository backend.
+
+So, I decided to use the Vault server. This made me to think about the second option.
+But since it **couples the client with the Vault server**, I chose the third option.
+
+By using Spring Cloud Config Server with Vault,
+I can switch the backend storage in the future **without changing the client code**.
+
+## Things to keep in mind
+
+When configuration client requests the configuration server,
+the configuration server will request the Vault server to get the configuration
+in the following format:
+
+- `VAULT_SERVER/v1/{backend}/data/{application name},{profile}`
+
+Which contains default values:
+
+- `VAULT_SERVER/v1/{backend}/data/application,default`
+- `VAULT_SERVER/v1/{backend}/data/{application name},default`
+
+So, to make the configuration client not to fail when the configuration is not found,
+you need to set `optional:` in the `spring.config.import` property.
+
 ## How to configure Vault
 
 ### Initialization
@@ -205,24 +242,3 @@ rm ~/.vault-token
 #   rm ~/.vault-token
 # ===========================================
 ```
-
-## Why Spring Cloud Config Server?
-
-I've considered between:
-
-- Config Client connects to:
-  1. Private Git repository + Config Server(Git) 
-  2. Vault server directly
-  3. Vault server + Config Server(Vault)
-
-and **chose the third option**.
-
-At first, I thought that the first option would be the best choice because it's familiar to me.
-However, when it comes to thinking about the security, it gets complicated.
-It's hard to **fine-grain the access control** with the Git repository backend.
-
-So, I decided to use the Vault server. This made me to think about the second option.
-But since it **couples the client with the Vault server**, I chose the third option.
-
-By using Spring Cloud Config Server with Vault,
-I can switch the backend storage in the future **without changing the client code**.
