@@ -1,0 +1,81 @@
+### Profile: default ###
+
+eureka:
+  instance:
+    hostname: ${EUREKA_INSTANCE_HOSTNAME:localhost}
+    instance-id: ${spring.application.name}:${spring.cloud.client.hostname}:${vcap.application.instance_id:${random.value}}
+    status-page-url-path: ${management.endpoints.web.base-path:/actuator}/info
+    health-check-url-path: ${management.endpoints.web.base-path:/actuator}/health
+  server:
+    # If the renewal signal decreases sharply due to a problem
+    # other than the instance itself (e.g., network problem), do not expire it.
+    # In other words, if the renewal rate is lower than the renewal rate threshold,
+    # it is considered that there may be some other problem, not the instance itself.
+    # Since it is not a problem with the instance itself, it should not be expired.
+    enable-self-preservation: true
+    # current renewal count / expected renewal count
+    renewal-percent-threshold: 0.6
+    # Expect that clients will renew their lease every 20 seconds.
+    # = 3 times per minute
+    # Calculation:
+    #   If 10 clients,
+    #   => Expected renewal count: (10 clients + 1) * 3 -> 33
+    #   => Threshold: 33 * threshold rate(0.6) = (int) 19.8 -> 19
+    #   So, if the renewal count is less than 19, self-preservation is activated.
+    expected-client-renewal-interval-seconds: 20
+    # Interval to calculate the threshold value based on the expected renewal count.
+    renewal-threshold-update-interval-ms: 600000
+
+---
+
+### Profile: development, single ###
+
+spring.config.activate.on-profile:
+  - development
+  - single
+
+eureka:
+  client:
+    registerWithEureka: false
+    fetchRegistry: false
+    serviceUrl:
+      defaultZone: ${EUREKA_CLIENT_SERVICE_URL:http://localhost:8761/eureka/}
+  server:
+    # Will use single server in development profile.
+    # So set the registry sync time to 0.
+    #
+    # Background:
+    #   When the Eureka server starts, it attempts to synchronize registry data with other Eureka server (peer) nodes.
+    #   At this time, if the peer node does not respond or there is no data in the peer node, it waits for the specified time.
+    #   If there is no data after waiting, starts with an empty registry.
+    wait-time-in-ms-when-sync-empty: 0
+
+---
+
+### Profile: cluster ###
+
+# Required environment variables and example values:
+# (Assume that you're running on Docker Compose and the service name is eureka-1~3)
+#   - EUREKA_CLIENT_SERVICE_URL: http://eureka-1:8761/eureka/,http://eureka-2:8761/eureka/,http://eureka-3:8761/eureka/
+
+spring.config.activate.on-profile: cluster
+
+eureka:
+  instance:
+    # Notifies to the server:
+    #   This instance will send a renewal request every N seconds.
+    lease-renewal-interval-in-seconds: 20
+    # Notifies to the server:
+    #   If there is no renewal request for N seconds from this instance
+    #   after the last renewal request, consider that it has expired.
+    lease-expiration-duration-in-seconds: 60
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: ${EUREKA_CLIENT_SERVICE_URL}
+  server:
+    # When the Eureka server starts, it attempts to synchronize registry data with other Eureka server (peer) nodes.
+    # At this time, if the peer node does not respond or there is no data in the peer node, it waits for the specified time.
+    # If there is no data after waiting, starts with an empty registry.
+    wait-time-in-ms-when-sync-empty: 60000
