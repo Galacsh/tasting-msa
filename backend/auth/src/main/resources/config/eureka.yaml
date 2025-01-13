@@ -1,0 +1,17 @@
+eureka:
+  instance:
+    instance-id: ${spring.application.name}:${spring.cloud.client.hostname}:${vcap.application.instance_id:${random.value}}
+    # Notifies to the server:
+    #   This instance will send a renewal request every N seconds.
+    lease-renewal-interval-in-seconds: 20
+    # Notifies to the server:
+    #   If there is no renewal request for N seconds from this instance
+    #   after the last renewal request, consider that it has expired.
+    lease-expiration-duration-in-seconds: 60
+    status-page-url-path: ${management.endpoints.web.base-path:/actuator}/info
+    health-check-url-path: ${management.endpoints.web.base-path:/actuator}/health
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    serviceUrl:
+      defaultZone: ${EUREKA_CLIENT_SERVICE_URL:http://localhost:8761/eureka/}
