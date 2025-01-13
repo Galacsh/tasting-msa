@@ -28,6 +28,17 @@ eureka:
 
 ---
 
+### Profile: development only ###
+
+spring.config.activate.on-profile: development
+
+eureka:
+  server:
+    # Disable cache for faster development.
+    use-read-only-response-cache: false
+
+---
+
 ### Profile: development, single ###
 
 spring.config.activate.on-profile:
