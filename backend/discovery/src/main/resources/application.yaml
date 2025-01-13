@@ -1,0 +1,26 @@
+server.port: ${SERVER_PORT:8761}
+
+spring:
+  application.name: discovery
+  # Must contain one of ["development", "production"].
+  # In production, you should also specify "single" or "cluster".
+  profiles.active:
+    - development
+
+---
+
+# Other configs
+spring:
+  main.banner-mode: off
+  output.ansi.enabled: detect
+  lifecycle.timeout-per-shutdown-phase: 10s
+
+logging.level:
+  root: info
+
+---
+
+# Import and group profiles
+spring.config.import:
+  - classpath:config/actuator.yaml
+  - classpath:config/eureka.yaml
