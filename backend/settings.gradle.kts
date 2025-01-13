@@ -1,4 +1,4 @@
 rootProject.name = "vvrite-backend"
 
-include("config")
+include("config", "discovery")
 include("auth")
