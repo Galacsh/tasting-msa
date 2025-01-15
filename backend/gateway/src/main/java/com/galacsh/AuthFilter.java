@@ -1,6 +1,5 @@
 package com.galacsh;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
@@ -23,7 +22,7 @@ public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> 
     private final AuthService authService;
     private static final Logger log = LoggerFactory.getLogger(AuthFilter.class);
 
-    public AuthFilter(AuthService authService, ObjectMapper mapper) {
+    public AuthFilter(AuthService authService) {
         super(Config.class);
         this.authService = authService;
     }
