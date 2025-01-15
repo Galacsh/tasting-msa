@@ -6,5 +6,5 @@ spring.cloud.gateway:
       predicates:
         - Path=/auth/**
       filters:
-        - AuthenticationFilter
+        - AuthFilter
         - RewritePath=/auth/?(?<path>.*), /$\{path}
