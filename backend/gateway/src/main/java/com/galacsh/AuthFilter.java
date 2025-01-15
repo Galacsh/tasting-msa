@@ -2,6 +2,9 @@ package com.galacsh;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cloud.client.circuitbreaker.NoFallbackAvailableException;
+import org.springframework.cloud.client.circuitbreaker.ReactiveCircuitBreaker;
+import org.springframework.cloud.client.circuitbreaker.ReactiveCircuitBreakerFactory;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.core.io.buffer.DataBuffer;
@@ -20,11 +23,13 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> {
 
     private final AuthService authService;
+    private final ReactiveCircuitBreaker circuitBreaker;
     private static final Logger log = LoggerFactory.getLogger(AuthFilter.class);
 
-    public AuthFilter(AuthService authService) {
+    public AuthFilter(AuthService authService, ReactiveCircuitBreakerFactory<?, ?> cbFactory) {
         super(Config.class);
         this.authService = authService;
+        this.circuitBreaker = cbFactory.create("auth");
     }
 
     @Override
@@ -34,6 +39,7 @@ public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> 
             ServerHttpResponse response = exchange.getResponse();
 
             return authService.validateToken()
+                    .transform(circuitBreaker::run)
                     .flatMap(isValid -> {
                         if (FALSE.equals(isValid)) {
                             log.debug("Due to invalid token, request will be rejected. {}", request.getId());
@@ -44,6 +50,11 @@ public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> 
                         return chain.filter(exchange);
                     })
                     .onErrorResume(e -> {
+                        if (e instanceof NoFallbackAvailableException && e.getCause() != null) {
+                            e = e.getCause();
+                            log.debug("Unwrapped NoFallbackAvailableException to get the actual cause.");
+                        }
+
                         log.error("Request failed during checking token validity.", e);
                         log.debug("Due to request failure, request will be rejected. {}", request.getId());
                         return rejectRequest(response, "Failed to validate");
