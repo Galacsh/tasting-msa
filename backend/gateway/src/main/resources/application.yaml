@@ -1,0 +1,26 @@
+server.port: 8080
+
+spring:
+  application.name: gateway
+  # Must be set to "development" or "production".
+  profiles.active: development
+
+---
+
+# Other configs
+spring:
+  main.banner-mode: off
+  output.ansi.enabled: detect
+  lifecycle.timeout-per-shutdown-phase: 10s
+
+logging.level:
+  root: info
+
+---
+
+# Import and group profiles
+spring.config.import:
+  - classpath:config/actuator.yaml
+  - classpath:config/eureka.yaml
+  - classpath:config/cloud-config.yaml
+  - classpath:config/gateway.yaml

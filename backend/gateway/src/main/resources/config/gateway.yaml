@@ -1,0 +1,10 @@
+spring.cloud.gateway:
+  routes:
+    # signup, login, logout, password-reset, jwt refresh
+    - id: auth
+      uri: lb://auth
+      predicates:
+        - Path=/auth/**
+      filters:
+        - AuthenticationFilter
+        - RewritePath=/auth/?(?<path>.*), /$\{path}
