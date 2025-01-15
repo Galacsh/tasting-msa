@@ -24,3 +24,4 @@ spring.config.import:
   - classpath:config/eureka.yaml
   - classpath:config/cloud-config.yaml
   - classpath:config/gateway.yaml
+  - classpath:config/resilience4j.yaml

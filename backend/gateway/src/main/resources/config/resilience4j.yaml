@@ -1,0 +1,51 @@
+# See: https://resilience4j.readme.io/docs/circuitbreaker#create-and-configure-a-circuitbreaker
+
+### Default ###
+
+resilience4j.circuitbreaker.instances:
+  auth:
+    base-config: default
+
+---
+
+### For production ###
+
+spring.config.activate.on-profile: development
+
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        # Measure the failure rate based on 50 calls.
+        sliding-window-size: 50
+        # If the number of calls is less than 50, the circuit breaker will not open.
+        minimum-number-of-calls: 50
+        # If the failure rate is over 50%, switch to the open state.
+        failure-rate-threshold: 50
+        # If the call duration is over 3 seconds, consider it as a slow call.
+        slow-call-duration-threshold.seconds: 3
+        # If the slow call rate is over 100%, switch to the open state.
+        slow-call-rate-threshold: 100
+        # Switch to the half-open state after 10 seconds.
+        wait-duration-in-open-state: 10s
+        # Allow 10 calls in the half-open state and measure the failure rate for that 10 calls.
+        # Depending on the measurement result, switch to the open or closed state.
+        permitted-number-of-calls-in-half-open-state: 10
+
+---
+
+### For development ###
+
+spring.config.activate.on-profile: production
+
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        sliding-window-size: 10
+        minimum-number-of-calls: 10
+        failure-rate-threshold: 50
+        slow-call-duration-threshold.seconds: 3
+        slow-call-rate-threshold: 50
+        wait-duration-in-open-state: 5s
+        permitted-number-of-calls-in-half-open-state: 4
