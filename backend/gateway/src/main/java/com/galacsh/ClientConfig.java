@@ -28,12 +28,11 @@ public class ClientConfig {
     }
 
     /**
-     * An HTTP Interface Client made with load balanced WebClient.
-     *
-     * @return HTTP Interface Client made with load balanced WebClient.
+     * SessionToPassport client made with load balanced WebClient.
+     * @return HTTP Interface Client
      */
     @Bean
-    public TokenValidator tokenValidator() {
+    public SessionToPassport sessionToPassport() {
         WebClient client = loadBalancedBuilder()
                 .baseUrl("lb://auth")
                 .build();
@@ -42,7 +41,7 @@ public class ClientConfig {
                 .builderFor(WebClientAdapter.create(client))
                 .build();
 
-        return factory.createClient(TokenValidator.class);
+        return factory.createClient(SessionToPassport.class);
     }
 
     /**
