@@ -3,7 +3,7 @@ package com.galacsh;
 import org.springframework.web.service.annotation.GetExchange;
 import reactor.core.publisher.Mono;
 
-public interface AuthService {
+public interface TokenValidator {
     @GetExchange("/tokens/validity")
-    Mono<Boolean> validateToken();
+    Mono<Boolean> validate();
 }
