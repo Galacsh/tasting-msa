@@ -10,7 +10,7 @@ resilience4j.circuitbreaker.instances:
 
 ### For production ###
 
-spring.config.activate.on-profile: development
+spring.config.activate.on-profile: production
 
 resilience4j:
   circuitbreaker:
@@ -36,7 +36,7 @@ resilience4j:
 
 ### For development ###
 
-spring.config.activate.on-profile: production
+spring.config.activate.on-profile: development
 
 resilience4j:
   circuitbreaker:
