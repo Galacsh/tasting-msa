@@ -7,6 +7,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class TokenController {
     @GetMapping("/tokens/validity")
     public boolean validateToken() {
-        return Math.random() < 0.5;
+        double random = Math.random();
+
+        if (random < 0.33) {
+            throw new RuntimeException("Random error");
+        } else {
+            return random < 0.66;
+        }
     }
 }

@@ -1,3 +1,53 @@
+# About the order of filters:
+#   All filters have a "order" value at runtime.
+#   This order value is used to sort filters and construct a filter chain.
+#
+#   The order value can be specified when defining a filter class.
+#   However, if the filter is listed in the properties file and the order value is not specified in the class,
+#   the order value is assigned from 1 in the order defined in the file.
+#   Example:
+#     [In the properties file]
+#     - AddRequestHeader # Order value: 1
+#     - RewritePath      # Order value: 2
+#     - PrefixPath       # Order value: 3
+#
+#   Lower order value means higher priority.
+#   But there is also a priority based on the type of filter as follows:
+#     Global filter > Default filter > Route filter
+#   That is, if there are Global, Default, and Route filters with the same order value,
+#   they are applied in the order of Global, Default, and Route.
+#
+#   The above is explained with an example as follows:
+#     [In the properties file]
+#       routes:
+#         - id: something
+#           uri: lb://something
+#           filters:
+#           - SetRequestHeader=X-My-Value, route-1 # Order value: 1
+#           - SetRequestHeader=X-My-Value, route-2 # Order value: 2
+#           - SetRequestHeader=X-My-Value, route-3 # Order value: 3
+#       default-filters:
+#         - SetRequestHeader=X-My-Value, default-1 # Order value: 1
+#         - SetRequestHeader=X-My-Value, default-2 # Order value: 2
+#       global-filters:
+#         - SetRequestHeader=X-My-Value, global-1  # Order value: 1
+#         - SetRequestHeader=X-My-Value, global-2  # Order value: 2
+#
+#     [Sorted actual filter chain (List)]
+#       - SetRequestHeader=X-My-Value, global-1  # Order value: 1
+#       - SetRequestHeader=X-My-Value, default-1 # Order value: 1
+#       - SetRequestHeader=X-My-Value, route-1   # Order value: 1
+#       - SetRequestHeader=X-My-Value, global-2  # Order value: 2
+#       - SetRequestHeader=X-My-Value, default-2 # Order value: 2
+#       - SetRequestHeader=X-My-Value, route-2   # Order value: 2
+#       - SetRequestHeader=X-My-Value, route-3   # Order value: 3
+#
+#     [Result] My-Value is set to route-3 in the Request Header.
+#
+# To debug order of filters:
+#   See #1: org.springframework.cloud.gateway.handler.FilteringWebHandler.getAllFilters
+#   See #2: org.springframework.cloud.gateway.route.RouteDefinitionRouteLocator.getFilters
+
 spring.cloud.gateway:
   routes:
     # signup, login, logout, password-reset, jwt refresh
@@ -6,5 +56,9 @@ spring.cloud.gateway:
       predicates:
         - Path=/auth/**
       filters:
+        - name: CircuitBreaker
+          args:
+            name: auth
+            fallbackUri: forward:/circuit-breaker-fallback
         - AuthFilter
         - RewritePath=/auth/?(?<path>.*), /$\{path}
