@@ -60,5 +60,5 @@ spring.cloud.gateway:
           args:
             name: auth
             fallbackUri: forward:/circuit-breaker-fallback
-        - AuthFilter
+        - InjectPassport
         - RewritePath=/auth/?(?<path>.*), /$\{path}
