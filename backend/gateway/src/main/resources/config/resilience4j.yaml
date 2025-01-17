@@ -1,13 +1,5 @@
 # See: https://resilience4j.readme.io/docs/circuitbreaker#create-and-configure-a-circuitbreaker
 
-### Default ###
-
-resilience4j.circuitbreaker.instances:
-  auth:
-    base-config: default
-
----
-
 ### For production ###
 
 spring.config.activate.on-profile: production
