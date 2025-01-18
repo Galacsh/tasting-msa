@@ -5,11 +5,13 @@ spring-dependency = "1.1.7"
 springdoc-webmvc-ui = "2.7.0"
 swagger-annotations = "2.2.27"
 sonarqube = "6.0.1.5171"
+junit-jupiter = "5.11.4"
 
 [libraries]
 springdoc-webmvc-ui = { group = "org.springdoc", name = "springdoc-openapi-starter-webmvc-ui", version.ref = "springdoc-webmvc-ui" }
 swagger-annotations = { group = "io.swagger.core.v3", name = "swagger-annotations-jakarta", version.ref = "swagger-annotations" }
 spring-cloud-dependencies = { group = "org.springframework.cloud", name = "spring-cloud-dependencies", version.ref = "spring-cloud" }
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit-jupiter" }
 
 [plugins]
 spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
