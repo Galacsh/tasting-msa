@@ -39,11 +39,12 @@ public class InjectPassport extends AbstractGatewayFilterFactory<InjectPassport.
             var request = exchange.getRequest();
             var response = exchange.getResponse();
 
-            var session = sessionCookieFrom(request);
-            if (session.isEmpty()) return rejectRequest(response);
+            var sessionCookie = sessionCookieFrom(request);
+            if (sessionCookie.isEmpty()) return rejectRequest(response);
+            String session = sessionCookie.get().getValue();
 
             Mono<Passport> exchangeToPassport = circuitBreaker.run(
-                    sessionToPassport.exchange(session.get().getValue()),
+                    sessionToPassport.exchange(session).map(Response::getData),
                     throwable -> fallback(throwable, response)
             );
 

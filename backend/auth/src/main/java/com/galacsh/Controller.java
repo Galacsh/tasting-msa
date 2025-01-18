@@ -10,8 +10,8 @@ import org.springframework.web.server.ServerErrorException;
 @RestController
 public class Controller {
     @GetMapping("/hello")
-    public String hello(@RequestHeader(name = "X-Passport", required = false) String passport) {
-        return "Hello, " + (passport == null ? "stranger" : passport);
+    public Response<String> hello(@RequestHeader(name = "X-Passport", required = false) String passport) {
+        return Response.ok("Hello, " + (passport == null ? "stranger" : passport));
     }
 
     @GetMapping("/4xx")
