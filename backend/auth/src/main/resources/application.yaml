@@ -19,11 +19,6 @@ logging.level:
 
 ---
 
-# Custom properties
-message: "Overridden?"
-
----
-
 # Import and group profiles
 spring.config.import:
   - classpath:config/actuator.yaml
