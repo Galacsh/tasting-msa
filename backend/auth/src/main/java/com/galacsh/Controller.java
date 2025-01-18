@@ -1,9 +1,11 @@
 package com.galacsh;
 
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.ErrorResponseException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ServerErrorException;
 
 @RestController
 public class Controller {
@@ -13,12 +15,12 @@ public class Controller {
     }
 
     @GetMapping("/4xx")
-    public ResponseEntity<?> four() {
-        return ResponseEntity.badRequest().body("4xx error");
+    public void four() {
+        throw new ErrorResponseException(HttpStatus.BAD_REQUEST);
     }
 
     @GetMapping("/5xx")
-    public ResponseEntity<?> five() {
-        return ResponseEntity.internalServerError().body("5xx error");
+    public void five() {
+        throw new ServerErrorException("Simulated server error", null);
     }
 }

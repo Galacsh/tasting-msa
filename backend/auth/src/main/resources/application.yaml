@@ -12,6 +12,7 @@ spring:
   main.banner-mode: off
   output.ansi.enabled: detect
   lifecycle.timeout-per-shutdown-phase: 10s
+  mvc.problemdetails.enabled: true
 
 logging.level:
   root: info
