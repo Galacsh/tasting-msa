@@ -6,5 +6,5 @@ import reactor.core.publisher.Mono;
 
 public interface SessionToPassport {
     @GetExchange("/passports")
-    Mono<Passport> exchange(@RequestParam("vvrite_id") String vvriteId);
+    Mono<Response<Passport>> exchange(@RequestParam("vvrite_id") String vvriteId);
 }
