@@ -1,4 +1,10 @@
-server.port: 0
+server:
+  port: 0
+  forward-headers-strategy: framework
+  error:
+    whitelabel.enabled: false
+    include-message: always
+    include-stacktrace: never
 
 spring:
   application.name: auth
