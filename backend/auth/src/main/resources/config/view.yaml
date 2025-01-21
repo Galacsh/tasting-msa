@@ -1,0 +1,16 @@
+spring:
+  mvc.static-path-pattern: /static/**
+  web.resources.static-locations: classpath:/static/
+
+---
+
+spring.config.activate.on-profile: development
+
+spring:
+  thymeleaf:
+    cache: false
+    prefix: file:backend/auth/src/main/resources/templates/
+  web.resources:
+    static-locations: file:backend/auth/src/main/resources/static/
+    cache:
+      period: 0

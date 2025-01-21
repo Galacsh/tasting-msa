@@ -1,24 +1,17 @@
 package com.galacsh.controller;
 
-import com.galacsh.Response;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
 
-@RestController
+@Controller
 public class AuthController {
-    @PostMapping("/signup")
-    public Response<?> signup() {
-        throw new RuntimeException("Not implemented yet");
-    }
-
-    @PostMapping("/login")
-    public Response<?> login() {
-        throw new RuntimeException("Not implemented yet");
+    @GetMapping("/login")
+    public String login() {
+        return "login";
     }
 
     @GetMapping("/logout")
-    public Response<?> logout() {
-        throw new RuntimeException("Not implemented yet");
+    public String logout() {
+        return "logout";
     }
 }
