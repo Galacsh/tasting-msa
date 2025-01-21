@@ -1,6 +1,7 @@
 eureka:
   instance:
-    instance-id: ${spring.application.name}:${spring.cloud.client.hostname}:${vcap.application.instance_id:${random.value}}
+    hostname: ${EUREKA_INSTANCE_HOSTNAME:localhost}
+    instance-id: ${spring.application.name}:${eureka.instance.hostname}:${vcap.application.instance_id:${random.value}}
     # Notifies to the server:
     #   This instance will send a renewal request every N seconds.
     lease-renewal-interval-in-seconds: 20
