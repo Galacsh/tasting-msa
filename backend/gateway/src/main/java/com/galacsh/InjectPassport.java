@@ -80,6 +80,10 @@ public class InjectPassport extends AbstractGatewayFilterFactory<InjectPassport.
         return Optional.ofNullable(request.getCookies().getFirst("vvrite_id"));
     }
 
+    public GatewayFilter create() {
+        return apply(new Config());
+    }
+
     public static class Config {
         // No configuration properties required
     }
