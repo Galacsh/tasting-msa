@@ -3,7 +3,7 @@
 eureka:
   instance:
     hostname: ${EUREKA_INSTANCE_HOSTNAME:localhost}
-    instance-id: ${spring.application.name}:${spring.cloud.client.hostname}:${vcap.application.instance_id:${random.value}}
+    instance-id: ${spring.application.name}:${eureka.instance.hostname}:${vcap.application.instance_id:${random.value}}
     status-page-url-path: ${management.endpoints.web.base-path:/actuator}/info
     health-check-url-path: ${management.endpoints.web.base-path:/actuator}/health
   server:
