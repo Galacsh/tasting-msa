@@ -1,0 +1,25 @@
+server.port: 0
+
+spring:
+  application.name: auth
+  # Must be set to "development" or "production".
+  profiles.active: development
+
+---
+
+# Other configs
+spring:
+  main.banner-mode: off
+  output.ansi.enabled: detect
+  lifecycle.timeout-per-shutdown-phase: 10s
+  mvc.problemdetails.enabled: true
+
+logging.level:
+  root: info
+
+---
+
+# Import and group profiles
+spring.config.import:
+  - classpath:config/eureka.yaml
+  - classpath:config/cloud-config.yaml
