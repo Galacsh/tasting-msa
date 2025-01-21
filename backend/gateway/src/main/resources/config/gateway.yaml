@@ -50,7 +50,6 @@
 
 spring.cloud.gateway:
   routes:
-    # signup, login, logout, password-reset, jwt refresh
     - id: auth
       uri: lb://auth
       predicates:
@@ -60,5 +59,4 @@ spring.cloud.gateway:
           args:
             name: auth
             fallbackUri: forward:/circuit-breaker-fallback
-        - InjectPassport
         - RewritePath=/auth/?(?<path>.*), /$\{path}
