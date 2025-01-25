@@ -77,11 +77,7 @@ public class InjectPassport extends AbstractGatewayFilterFactory<InjectPassport.
     }
 
     private Optional<HttpCookie> sessionCookieFrom(ServerHttpRequest request) {
-        return Optional.ofNullable(request.getCookies().getFirst("vvrite_id"));
-    }
-
-    public GatewayFilter create() {
-        return apply(new Config());
+        return Optional.ofNullable(request.getCookies().getFirst("tmid"));
     }
 
     public static class Config {
