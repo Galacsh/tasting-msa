@@ -1,0 +1,33 @@
+server:
+  port: 0
+  forward-headers-strategy: framework
+  error:
+    whitelabel.enabled: false
+    include-message: always
+    include-stacktrace: never
+
+spring:
+  application.name: profile
+  # Must be set to "development" or "production".
+  profiles.active: development
+
+---
+
+# Other configs
+spring:
+  main.banner-mode: off
+  output.ansi.enabled: detect
+  lifecycle.timeout-per-shutdown-phase: 10s
+  mvc.problemdetails.enabled: true
+
+logging.level:
+  root: info
+
+---
+
+# Import and group profiles
+spring.config.import:
+  - classpath:config/actuator.yaml
+  - classpath:config/eureka.yaml
+  - classpath:config/passport.yaml
+  - classpath:config/cloud-config.yaml
