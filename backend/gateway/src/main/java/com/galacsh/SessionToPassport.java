@@ -5,6 +5,6 @@ import org.springframework.web.service.annotation.GetExchange;
 import reactor.core.publisher.Mono;
 
 public interface SessionToPassport {
-    @GetExchange("/passports")
+    @GetExchange("/api/passports")
     Mono<Response<Passport>> exchange(@CookieValue("tmid") String sessionId);
 }

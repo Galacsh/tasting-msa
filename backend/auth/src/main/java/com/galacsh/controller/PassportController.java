@@ -8,8 +8,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class PassportController {
-    @GetMapping("/passports")
+    @GetMapping("/api/passports")
     public Response<Passport> exchangeToPassport(Authentication authentication) {
+        if (authentication == null || !authentication.isAuthenticated()) return Response.ok(null);
+
         var passport = new Passport(authentication.getName());
         return Response.ok(passport);
     }

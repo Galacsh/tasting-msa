@@ -22,7 +22,8 @@ public class SecurityConfig {
             "/signup",
             "/login/**",
             "/logout",
-            "/reset-password"
+            "/reset-password",
+            "/api/passports",
     };
 
     public SecurityConfig(UserService userService) {
