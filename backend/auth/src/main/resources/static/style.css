@@ -26,6 +26,7 @@ form {
     justify-content: center;
     align-items: center;
     gap: 1rem;
+    margin-bottom: 1rem;
 }
 
 form > div {
@@ -36,10 +37,11 @@ form > div {
 }
 
 form label {
+    width: 7rem;
     margin-right: 1rem;
 }
 
-form input[type="text"], form input[type="password"] {
+form input[type="text"], form input[type="password"], form input[type="email"] {
     width: 10rem;
     padding: 0.5rem 1rem;
 }
@@ -47,4 +49,19 @@ form input[type="text"], form input[type="password"] {
 form input[type="submit"] {
     height: 2rem;
     width: 100%;
+}
+
+ul {
+    display: block;
+    list-style-type: disc;
+    margin-block-start: 0.5rem;
+    margin-block-end: 0.5rem;
+    margin-inline-start: 0;
+    margin-inline-end: 0;
+    padding-inline-start: 2rem;
+}
+
+li {
+    display: list-item;
+    text-align: -webkit-match-parent;
 }
