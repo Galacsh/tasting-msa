@@ -4,49 +4,34 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link rel="stylesheet" th:href="@{/static/style.css}" href="../static/style.css"/>
-    <title>Log In</title>
-
-    <script>
-        (function () {
-            const url = new URL(window.location.href);
-            deleteParam(url, "logout");
-            deleteParam(url, "error");
-            window.history.replaceState(null, "", url.href);
-
-            function deleteParam(url, key) {
-                const param = url.searchParams.get(key)
-                if (param != null) {
-                    url.searchParams.delete(key);
-                }
-            }
-        }())
-    </script>
+    <title>Sign Up</title>
 </head>
 <body>
 <div class="container">
-    <h1>LOGIN</h1>
-    <form th:action="@{/login}" method="post">
+    <h1>SIGN UP</h1>
+    <form th:action="@{/signup}" method="post">
         <div th:if="${param.error}">
-            Invalid username and password.
-        </div>
-        <div th:if="${param.logout}">
-            You have been logged out.
+            Invalid input.
         </div>
         <div>
             <label for="username">Username</label>
             <input id="username" type="text" name="username" placeholder="Username"/>
         </div>
         <div>
+            <label for="email">Email</label>
+            <input id="email" type="email" name="email" placeholder="Email"/>
+        </div>
+        <div>
             <label for="password">Password</label>
             <input id="password" type="password" name="password" placeholder="Password"/>
         </div>
-        <input type="submit" value="Log in"/>
+        <input type="submit" value="Sign up"/>
     </form>
 
     <div>
         <ul>
             <li>
-                OAuth2 log in
+                OAuth2 sign up
                 <ul>
                     <li>
                         <a th:href="@{/oauth2/authorization/google}">Google</a>
@@ -54,7 +39,7 @@
                 </ul>
             </li>
             <li>
-                <a th:href="@{/signup}">Sign up</a>
+                <a th:href="@{/login}">Log in</a>
             </li>
         </ul>
     </div>

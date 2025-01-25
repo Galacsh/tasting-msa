@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title th:text="${title}">
+        Alert
+    </title>
+
+    <script th:inline="javascript">
+        (function () {
+            const message = /*[[${message}]]*/ "Message to show";
+            alert(message);
+
+            const url = /*[[@{${url}}]]*/ "URL to redirect";
+            window.location.replace(url);
+        }());
+    </script>
+</head>
+<body></body>
+</html>
