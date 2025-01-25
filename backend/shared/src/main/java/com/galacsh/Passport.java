@@ -1,4 +1,4 @@
 package com.galacsh;
 
-public record Passport(String id) {
+public record Passport(String username) {
 }

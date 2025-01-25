@@ -1,5 +1,7 @@
 package com.galacsh;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cloud.client.circuitbreaker.ReactiveCircuitBreaker;
@@ -22,15 +24,17 @@ public class InjectPassport extends AbstractGatewayFilterFactory<InjectPassport.
 
     private final SessionToPassport sessionToPassport;
     private final ReactiveCircuitBreaker circuitBreaker;
+    private final ObjectMapper mapper;
     private static final Logger log = LoggerFactory.getLogger(InjectPassport.class);
 
     // TODO: Use shared class
     private static final byte[] UNAUTHORIZED_RESPONSE = "{\"message\":\"Unauthorized\"}".getBytes(StandardCharsets.UTF_8);
 
-    public InjectPassport(SessionToPassport sessionToPassport, ReactiveCircuitBreakerFactory<?, ?> cbFactory) {
+    public InjectPassport(SessionToPassport sessionToPassport, ReactiveCircuitBreakerFactory<?, ?> cbFactory, ObjectMapper mapper) {
         super(Config.class);
         this.sessionToPassport = sessionToPassport;
         this.circuitBreaker = cbFactory.create("passport");
+        this.mapper = mapper;
     }
 
     @Override
@@ -41,10 +45,10 @@ public class InjectPassport extends AbstractGatewayFilterFactory<InjectPassport.
 
             var sessionCookie = sessionCookieFrom(request);
             if (sessionCookie.isEmpty()) return rejectRequest(response);
-            String session = sessionCookie.get().getValue();
+            String sessionId = sessionCookie.get().getValue();
 
             Mono<Passport> exchangeToPassport = circuitBreaker.run(
-                    sessionToPassport.exchange(session).map(Response::getData),
+                    sessionToPassport.exchange(sessionId).map(Response::getData),
                     throwable -> fallback(throwable, response)
             );
 
@@ -52,7 +56,13 @@ public class InjectPassport extends AbstractGatewayFilterFactory<InjectPassport.
                 if (passport == null) return rejectRequest(response);
 
                 var passportInjected = exchange.getRequest().mutate()
-                        .headers(httpHeaders -> httpHeaders.set("X-Passport", passport.id()))
+                        .headers(httpHeaders -> {
+                            try {
+                                httpHeaders.set("X-Passport", mapper.writeValueAsString(passport));
+                            } catch (JsonProcessingException e) {
+                                throw new RuntimeException(e);
+                            }
+                        })
                         .build();
 
                 return chain.filter(exchange.mutate().request(passportInjected).build());
