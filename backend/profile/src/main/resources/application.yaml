@@ -30,4 +30,5 @@ spring.config.import:
   - classpath:config/actuator.yaml
   - classpath:config/eureka.yaml
   - classpath:config/passport.yaml
+  - classpath:config/event.yaml
   - classpath:config/cloud-config.yaml
