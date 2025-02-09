@@ -1,5 +1,6 @@
 package com.galacsh;
 
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -40,5 +41,17 @@ public class ProfileService {
         }
 
         return result.toString();
+    }
+
+    @EventListener({Event.class})
+    public void handleEvent(Event event) {
+        EventType eventType = event.getEventType();
+        String username = ((EventPayload.UsernameOnly) event.getPayload()).username();
+
+        if (eventType == EventType.USER_SIGN_UP) {
+            createRandomProfile(username);
+        } else if (eventType == EventType.USER_DELETE) {
+            profileRepository.deleteAllByUsername(username);
+        }
     }
 }
