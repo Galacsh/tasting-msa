@@ -1,10 +1,10 @@
 package com.galacsh.service;
 
+import com.galacsh.Event;
+import com.galacsh.EventPayload.UsernameOnly;
 import com.galacsh.config.OAuth2CommonAttributeNames;
 import com.galacsh.dto.CompatibleUser;
 import com.galacsh.entity.UserEntity;
-import com.galacsh.Event;
-import com.galacsh.EventPayload.UsernameOnly;
 import com.galacsh.repository.UserRepository;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.core.userdetails.User;
@@ -22,7 +22,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Collections;
 import java.util.Optional;
 
-import static com.galacsh.EventType.*;
+import static com.galacsh.EventType.USER_DELETE;
+import static com.galacsh.EventType.USER_SIGN_UP;
 
 @Service
 public class UserService extends DefaultOAuth2UserService implements UserDetailsService {
