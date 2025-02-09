@@ -1,0 +1,18 @@
+spring:
+  cloud:
+    stream:
+      kafka:
+        streams:
+          binder:
+            brokers:
+              - localhost:29092
+              - localhost:39092
+              - localhost:49092
+          bindings:
+            auth-in-0:
+              consumer:
+                value-serde: com.galacsh.EventDeserializer
+      bindings:
+        auth-in-0:
+          destination: auth
+          group: auth-listeners

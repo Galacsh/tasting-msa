@@ -29,6 +29,7 @@ logging.level:
 spring.config.import:
   - classpath:config/actuator.yaml
   - classpath:config/view.yaml
+  - classpath:config/event.yaml
   - classpath:config/security.yaml
   - classpath:config/eureka.yaml
   - classpath:config/cloud-config.yaml
