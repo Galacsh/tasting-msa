@@ -16,6 +16,7 @@ java {
 
 dependencies {
     compileOnly("org.springframework.boot:spring-boot-starter-web")
+    compileOnly("org.springframework.kafka:spring-kafka")
     testImplementation(libs.junit.jupiter)
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
