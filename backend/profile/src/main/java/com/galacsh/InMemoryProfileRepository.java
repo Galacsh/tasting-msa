@@ -28,4 +28,9 @@ public class InMemoryProfileRepository implements ProfileRepository {
                 .filter(profile -> profile.getUsername().equals(username))
                 .toList();
     }
+
+    @Override
+    public void deleteAllByUsername(String username) {
+        profiles.removeIf(profile -> profile.getUsername().equals(username));
+    }
 }
